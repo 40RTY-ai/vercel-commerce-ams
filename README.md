@@ -1,4 +1,46 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&products=%255B%257B%2522type%2522%253A%2522integration%2522%252C%2522protocol%2522%253A%2522other%2522%252C%2522productSlug%2522%253A%2522shopify%2522%252C%2522integrationSlug%2522%253A%2522shopify%2522%257D%255D&env=COMPANY_NAME,SITE_NAME)
+# Next.js Commerce × 40rty
+
+[Next.js Commerce](https://github.com/vercel/commerce) with a [40rty](https://40rty-docs.vercel.app/) agentic page: visitors ask the store, and an agent composes the answer from **the store's own components** — its product tiles, gallery, variant picker and add-to-cart — so everything it lays out can go straight into the real Shopify cart.
+
+**Live:** https://vercel-commerce-ams.vercel.app
+
+## What 40rty adds
+
+Everything lives in [`app/forty/`](app/forty); the rest of the store is untouched.
+
+| File                          | What it is                                                                                                                                                                      |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `catalog.ts`                  | What the agent may compose — `productGrid`, `collectionList`, `comparisonTable`, `productDetail`. Data only (Zod schemas + examples); `forty publish` sends it to the platform. |
+| `catalogs/*.md`               | One manifest per component: what it shows and when the agent should reach for it.                                                                                               |
+| `components.tsx`              | Each type drawn with the store's existing components (`Grid`, `GridTileImage`, `Gallery`, `ProductDescription`, `AddToCart`).                                                   |
+| `to-store.ts`                 | Maps 40rty's product/collection entities to `lib/shopify`'s types — the one place the two shapes meet.                                                                          |
+| `Shell.tsx`                   | The `@40rty/ams-ui` island, thread panel and presence, themed from the store's tokens in `app/globals.css`.                                                                     |
+| `page.tsx`, `AgenticPage.tsx` | `/forty`, which `next.config.ts` serves at `/` when `FORTY_AGENTIC=1`.                                                                                                          |
+
+`forty.config.json` binds the app to its space. `tsconfig.json` uses `"moduleResolution": "bundler"` so `@40rty/ams-ui`'s subpath exports resolve.
+
+## Run it against your own store
+
+```bash
+pnpm install
+rm forty.config.json                        # it binds this repo to our space
+npx forty init --create <your-space-slug>   # sign in, create your space, write your own
+```
+
+Put your store in `.env` (see `.env.example`) — `SHOPIFY_STORE_DOMAIN` and a **Storefront** API token in `SHOPIFY_STOREFRONT_ACCESS_TOKEN` — plus `FORTY_AGENTIC=1`. The store must be published (no password) with products on the Shop channel: the agent searches Shopify's Global catalog.
+
+```bash
+npx forty connect                  # attach the store to the space
+npx forty dev --once               # publish the catalog as a draft, write FORTY_DEV_TOKEN to .env
+pnpm dev                           # http://localhost:3000 is the agentic page
+npx forty doctor http://localhost:3000
+```
+
+Ship it: deploy as usual (without `FORTY_DEV_TOKEN` — `.vercelignore` keeps `.env` out of CLI uploads), then `npx forty publish --origin https://your-site.example`.
+
+`FORTY_AGENTIC=0` (or unset) builds the original store, unchanged.
+
+---
 
 # Next.js Commerce
 
