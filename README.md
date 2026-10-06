@@ -6,16 +6,17 @@
 
 ## What 40rty adds
 
-Everything lives in [`app/forty/`](app/forty); the rest of the store is untouched.
+The island and the conversation are on every page; ask from a product page and you land on `/`, where the answer is laid out, with the thread following you as you browse. Everything lives in [`app/forty/`](app/forty); the store's only other edit is the root layout, which wraps every page in `AgenticFrame` when `FORTY_AGENTIC=1`.
 
-| File                          | What it is                                                                                                                                                                      |
-| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `catalog.ts`                  | What the agent may compose — `productGrid`, `collectionList`, `comparisonTable`, `productDetail`. Data only (Zod schemas + examples); `forty publish` sends it to the platform. |
-| `catalogs/*.md`               | One manifest per component: what it shows and when the agent should reach for it.                                                                                               |
-| `components.tsx`              | Each type drawn with the store's existing components (`Grid`, `GridTileImage`, `Gallery`, `ProductDescription`, `AddToCart`).                                                   |
-| `to-store.ts`                 | Maps 40rty's product/collection entities to `lib/shopify`'s types — the one place the two shapes meet.                                                                          |
-| `Shell.tsx`                   | The `@40rty/ams-ui` island, thread panel and presence, themed from the store's tokens in `app/globals.css`.                                                                     |
-| `page.tsx`, `AgenticPage.tsx` | `/forty`, which `next.config.ts` serves at `/` when `FORTY_AGENTIC=1`.                                                                                                          |
+| File                                      | What it is                                                                                                                                                                      |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `catalog.ts`                              | What the agent may compose — `productGrid`, `collectionList`, `comparisonTable`, `productDetail`. Data only (Zod schemas + examples); `forty publish` sends it to the platform. |
+| `catalogs/*.md`                           | One manifest per component: what it shows and when the agent should reach for it.                                                                                               |
+| `components.tsx`                          | Each type drawn with the store's existing components (`Grid`, `GridTileImage`, `Gallery`, `ProductDescription`, `AddToCart`).                                                   |
+| `to-store.ts`                             | Maps 40rty's product/collection entities to `lib/shopify`'s types — the one place the two shapes meet.                                                                          |
+| `AgenticFrame.tsx`, `FortySpacefront.tsx` | Mounts the spacefront once, in the root layout, beside every page — so the session survives navigation and the pages still render on the server.                                |
+| `Shell.tsx`                               | The `@40rty/ams-ui` island, thread panel and presence, themed from the store's tokens in `app/globals.css`; sends an ask made on a store page to `/`.                           |
+| `page.tsx`, `canvas-slot.tsx`             | `/forty`, which `next.config.ts` serves at `/` when `FORTY_AGENTIC=1`: the slot the canvas is portalled into.                                                                   |
 
 `forty.config.json` binds the app to its space. `tsconfig.json` uses `"moduleResolution": "bundler"` so `@40rty/ams-ui`'s subpath exports resolve.
 

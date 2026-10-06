@@ -1,7 +1,7 @@
 import Footer from "components/layout/footer";
 import { notFound } from "next/navigation";
 
-import { AgenticPage } from "./AgenticPage";
+import { CanvasSlot } from "./canvas-slot";
 
 export const metadata = {
   description: "Ask the store — a page composed for you as you ask.",
@@ -13,15 +13,14 @@ export const metadata = {
  * rewrite in `next.config.ts`. The store's own build answers `/forty` with a
  * 404, so it adds no URL to the store.
  *
- * `FORTY_DEV_TOKEN` is the developer's preview credential, written to `.env`
- * by `forty dev`. It is read here on the server and handed down; it is absent
- * in production, where the space renders what it has published.
+ * The spacefront itself lives in the root layout (`FortySpacefront`); this
+ * page only says where its canvas goes.
  */
 export default function FortyPage() {
   if (process.env.FORTY_AGENTIC !== "1") notFound();
   return (
     <>
-      <AgenticPage token={process.env.FORTY_DEV_TOKEN} />
+      <CanvasSlot className="min-h-screen" />
       <Footer />
     </>
   );
