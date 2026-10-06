@@ -1,0 +1,8 @@
+{
+  "apiUrl": "https://40rty-ams-production.up.railway.app",
+  "spaceSlug": "vercel-commerce-ams",
+  "sourceId": "@vercel-commerce/storefront",
+  "label": "Vercel Commerce Ams",
+  "catalog": "app/forty/catalog.ts",
+  "manifests": "app/forty/catalogs"
+}

@@ -14,4 +14,11 @@ export default {
       },
     ],
   },
+  // The agentic deployment (FORTY_AGENTIC=1) serves the agentic webpage at
+  // `/`; every other route stays the store's. The store's own build is unchanged.
+  async rewrites() {
+    return process.env.FORTY_AGENTIC === "1"
+      ? { beforeFiles: [{ source: "/", destination: "/forty" }] }
+      : [];
+  },
 };

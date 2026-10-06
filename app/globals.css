@@ -19,6 +19,24 @@
   }
 }
 
+/* The 40rty shell (island, thread panel, presence) in this store's design. */
+:root {
+  --fourty-surface: var(--color-white, #fff);
+  --fourty-fg: var(--color-black, #000);
+  --fourty-accent: var(--color-blue-600, #2563eb);
+  --fourty-accent-fg: var(--color-white, #fff);
+  --fourty-radius: var(--radius-lg, 0.5rem);
+  --fourty-font-family:
+    var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fourty-surface: var(--color-black, #000);
+    --fourty-fg: var(--color-white, #fff);
+  }
+}
+
 @supports (font: -apple-system-body) and (-webkit-appearance: none) {
   img[loading="lazy"] {
     clip-path: inset(0.6px);
